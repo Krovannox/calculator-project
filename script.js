@@ -46,7 +46,11 @@ buttons.addEventListener("click", (e) => {
         return;
     }
 
-    display.value += value; // Displays the clicked value
+    if (display.value === "0") { // Remove the 0 if another number is pressed.
+        display.value = value;
+    } else {
+        display.value += value;
+    }
 
     console.log(value);
     console.log(display.value);
