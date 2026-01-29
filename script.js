@@ -29,13 +29,18 @@ const buttons = document.getElementById("buttons-container");
 buttons.addEventListener("click", (e) => {
     if (!e.target.classList.contains("btn")) return; // Don't act outside the target button
 
-    if (e.target.dataset.value === "C") { // "C" button
+    if (e.target.dataset.value === "C") { // "Clear" button
         clear();
         return;
     };
 
     if (e.target.dataset.value === "%") { // "Percentage" button
         display.value = percentage(display.value);
+        return;
+    }
+
+    if (e.target.dataset.value === "⌫") { // "Return" button
+        display.value = display.value.slice(0, -1);
         return;
     }
 
