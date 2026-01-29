@@ -18,7 +18,7 @@ display.value = a;
 
 // Clear function
 const clear = function() {
-    a = 0;
+    a = "0";
     operator = null;
     b = null;
     display.value = a;
@@ -29,23 +29,25 @@ const buttons = document.getElementById("buttons-container");
 buttons.addEventListener("click", (e) => {
     if (!e.target.classList.contains("btn")) return; // Don't act outside the target button
 
-    if (e.target.dataset.value === "C") { // "Clear" button
+    const value = e.target.dataset.value;
+
+    if (value === "C") { // "Clear" button
         clear();
         return;
-    };
+    }
 
-    if (e.target.dataset.value === "%") { // "Percentage" button
+    if (value === "%") { // "Percentage" button
         display.value = percentage(display.value);
         return;
     }
 
-    if (e.target.dataset.value === "⌫") { // "Return" button
-        display.value = display.value.slice(0, -1);
+    if (value === "⌫") { // "Return" button
+        display.value = display.value.slice(0, -1) || "0";
         return;
     }
 
-    display.value += e.target.dataset.value; // Displays the clicked value
+    display.value += value; // Displays the clicked value
 
-    console.log(e.target.dataset.value);
+    console.log(value);
     console.log(display.value);
 });
