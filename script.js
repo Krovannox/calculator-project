@@ -4,6 +4,9 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
+// Modifiers function block
+const percentage = (n) => n / 100;
+
 // Variables used for the calculation
 let a = 0;
 let operator = null;
@@ -31,7 +34,13 @@ buttons.addEventListener("click", (e) => {
         return;
     };
 
+    if (e.target.dataset.value === "percentage") { // "Percentage" button
+        display.value = percentage(display.value);
+        return;
+    }
+
     display.value += e.target.dataset.value; // Displays the clicked value
 
     console.log(e.target.dataset.value);
+    console.log(display.value);
 });
