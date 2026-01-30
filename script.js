@@ -50,13 +50,7 @@ const clear = function() {
     display.value = a;
 }
 
-// Event listener for the buttons
-const buttons = document.getElementById("buttons-container");
-buttons.addEventListener("click", (e) => {
-    if (!e.target.classList.contains("btn")) return; // Don't act outside the target button
-
-    const value = e.target.dataset.value;
-
+function handleEvent(value) {
     if (value === "%") { // "Percentage" button
         display.value = percentage(display.value);
         return;
@@ -96,7 +90,7 @@ buttons.addEventListener("click", (e) => {
         }
     }
 
-    if (e.target.classList.contains("operator") && value !== "=") { // Saves the value to "a" and the selected operator
+    if (["+", "-", "×", "÷"].includes(value)) { // Saves the value to "a" and the selected operator
         if (operator !== null && display.value === "") { // Prevents activating the operator if the second number is empty
             operator = value; // Updates the operator if the user change it's mind
             return;
@@ -150,4 +144,35 @@ buttons.addEventListener("click", (e) => {
     } else {
         display.value += value;
     }
+}
+
+// Event listener for the buttons
+const buttons = document.getElementById("buttons-container");
+buttons.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("btn")) return; // Don't act outside the target button
+
+    handleEvent(e.target.dataset.value);
 });
+
+// Event listener for keyboard
+document.addEventListener("keydown", (e) => {
+    const keyConvert = {
+        "/": "÷",
+        "*": "×",
+        "Enter": "=",
+        "Backspace": "⌫",
+        "Escape": "C",
+    };
+
+    const allowedKeys = "+-.0123456789";
+
+    if (allowedKeys.includes(e.key)) {
+        e.preventDefault();
+        handleEvent(e.key);
+    } else if (e.key in keyConvert) {
+        e.preventDefault();
+        handleEvent(keyConvert[e.key]);
+    }
+
+    console.log(e.key);
+})
