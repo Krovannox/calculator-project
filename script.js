@@ -67,6 +67,23 @@ buttons.addEventListener("click", (e) => {
         }
     }
 
+    if (value === "+") { // Replace multiple operators for a single one with a check on e.target.dataset.value?
+        a = display.value;
+        display.value = "0";
+        operator = "add";
+        console.log(`a: ${a}`);
+        console.log(`a: ${operator}`);
+        return;
+    }
+
+    if (value === "=") {
+        b = display.value;
+        if (operator === "add") {
+            display.value = add(Number(a), Number(b));
+            return;
+        }
+    }
+
     if (display.value === "0") { // Remove the 0 if another number is pressed.
         display.value = value;
     } else {
