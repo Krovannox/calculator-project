@@ -1,3 +1,15 @@
+// Log Status
+function showLog() {
+    console.log(`A: ${a}`);
+    console.log(`Operator: "${operator}"`);
+    console.log(`B: ${b}`);
+    console.log(`Current display: ${display.value}`);
+    console.log("====================================")
+}
+
+// Reset display
+let shouldReset = false;
+
 // Operations function block
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
@@ -8,20 +20,14 @@ const divide = (a, b) => a / b;
 const operate = function(numA, numB, operation) {
     let a = Number(numA);
     let b = Number(numB);
+
+    console.log(`>>>OPERATE FUNCTION:`)
+    console.log(`A(${a}) ${operator} B(${b})`);
     
-    if (operation === "+") {
-        display.value = add(Number(a), Number(b));
-    } else if (operation === "-") {
-        display.value = subtract(Number(a), Number(b));
-    } else if (operation === "×") {
-        display.value = multiply(Number(a), Number(b));
-    } else if (operation === "÷" && b === 0) {
-        display.value = "Error";
-    } else if (operation === "÷") {
-        display.value = divide(Number(a), Number(b));
-    }
-    
-    return;
+    if (operation === "+") return add(a, b);
+    if (operation === "-") return subtract(a, b);
+    if (operation === "×") return multiply(a, b);
+    if (operation === "÷") return b === 0 ? "Error": divide(a, b);
 }
 
 // Modifiers function block
@@ -91,28 +97,57 @@ buttons.addEventListener("click", (e) => {
     }
 
     if (e.target.classList.contains("operator") && value !== "=") { // Saves the value to "a" and the selected operator
-        a = display.value;
-        display.value = "";
+        if (operator !== null && display.value === "") { // Prevents activating the operator if the second number is empty
+            operator = value; // Updates the operator if the user change it's mind
+            return;
+        } else if (operator !== null && display.value !== "") {
+            // FLAG B
+            console.log("FLAG B");
+            b = display.value;
+            a = operate(a, b, operator);
+            display.value = a;
+            shouldReset = true;
+        } else {
+            // FLAG A happens when operator === null and display.value is Empty
+            console.log("FLAG A");
+            a = display.value;
+            display.value = "";
+        }
+        
         operator = value;
-        console.log(`a: ${a}`);
-        console.log(`operator: ${operator}`);
-        console.log(`New display value: ${display.value}`);
+        
+
+        console.log(`AFTER PRESSING "${value}"`);
+        showLog();
         return;
     }
 
     if (value === "=") { // Saves the next value to "b" and calls the operator function
         b = display.value;
-        console.log(`b: ${b}`);
+        console.log("---BEFORE EVALUATING");
+        console.log(`A: ${a}`);
 
-        operate(a, b, operator);
+        a = operate(a, b, operator);
+
+        if (!Number.isInteger(a)) {
+                a = a.toFixed(5);
+        }
+
+        display.value = a;
+        shouldReset = true;
+        operator = null;
+
+        console.log(`AFTER PRESSING "="`);
+        showLog();
         return;
     }
 
-    if (display.value === "0") { // Remove the 0 if another number is pressed.
+    if (shouldReset) {
+        display.value = value;
+        shouldReset = false;
+    } else if (display.value === "0") {
         display.value = value;
     } else {
         display.value += value;
     }
-
-    console.log(`Display value: ${display.value}`);
 });
