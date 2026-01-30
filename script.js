@@ -4,6 +4,26 @@ const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => a / b;
 
+// Function handler for the operations
+const operate = function(numA, numB, operation) {
+    let a = Number(numA);
+    let b = Number(numB);
+    
+    if (operation === "+") {
+        display.value = add(Number(a), Number(b));
+    } else if (operation === "-") {
+        display.value = subtract(Number(a), Number(b));
+    } else if (operation === "×") {
+        display.value = multiply(Number(a), Number(b));
+    } else if (operation === "÷" && b === 0) {
+        display.value = "Error";
+    } else if (operation === "÷") {
+        display.value = divide(Number(a), Number(b));
+    }
+    
+    return;
+}
+
 // Modifiers function block
 const percentage = (n) => n / 100;
 
@@ -84,17 +104,7 @@ buttons.addEventListener("click", (e) => {
         b = display.value;
         console.log(`b: ${b}`);
 
-        if (operator === "+") {
-            display.value = add(Number(a), Number(b));
-        } else if (operator === "-") {
-            display.value = subtract(Number(a), Number(b));
-        } else if (operator === "×") {
-            display.value = multiply(Number(a), Number(b));
-        } else if (operator === "÷" && b === "0") {
-            display.value = "Error";
-        } else if (operator === "÷") {
-            display.value = divide(Number(a), Number(b));
-        }
+        operate(a, b, operator);
         return;
     }
 
