@@ -61,27 +61,41 @@ buttons.addEventListener("click", (e) => {
     if (value === ".") { // "Dot" button
         if (display.value.includes(".")) {
             return;
+        } else if (display.value === "") {
+            display.value = "0" + ".";
+            return;
         } else {
             display.value = display.value + ".";
             return;
         }
     }
 
-    if (value === "+") { // Replace multiple operators for a single one with a check on e.target.dataset.value?
+    if (e.target.classList.contains("operator") && value !== "=") { // Saves the value to "a" and the selected operator
         a = display.value;
-        display.value = "0";
-        operator = "add";
+        display.value = "";
+        operator = value;
         console.log(`a: ${a}`);
-        console.log(`a: ${operator}`);
+        console.log(`operator: ${operator}`);
+        console.log(`New display value: ${display.value}`);
         return;
     }
 
-    if (value === "=") {
+    if (value === "=") { // Saves the next value to "b" and calls the operator function
         b = display.value;
-        if (operator === "add") {
+        console.log(`b: ${b}`);
+
+        if (operator === "+") {
             display.value = add(Number(a), Number(b));
-            return;
+        } else if (operator === "-") {
+            display.value = subtract(Number(a), Number(b));
+        } else if (operator === "×") {
+            display.value = multiply(Number(a), Number(b));
+        } else if (operator === "÷" && b === "0") {
+            display.value = "Error";
+        } else if (operator === "÷") {
+            display.value = divide(Number(a), Number(b));
         }
+        return;
     }
 
     if (display.value === "0") { // Remove the 0 if another number is pressed.
@@ -90,6 +104,5 @@ buttons.addEventListener("click", (e) => {
         display.value += value;
     }
 
-    console.log(`Current value: ${value}`);
     console.log(`Display value: ${display.value}`);
 });
