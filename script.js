@@ -31,13 +31,13 @@ buttons.addEventListener("click", (e) => {
 
     const value = e.target.dataset.value;
 
-    if (value === "C") { // "Clear" button
-        clear();
-        return;
-    }
-
     if (value === "%") { // "Percentage" button
         display.value = percentage(display.value);
+        return;
+    }
+    
+    if (value === "C") { // "Clear" button
+        clear();
         return;
     }
 
@@ -46,12 +46,33 @@ buttons.addEventListener("click", (e) => {
         return;
     }
 
+    if (value === "+/-") { // "Plus-Minus" button
+        if (display.value === "0") {
+            return;
+        } else if (display.value.includes("-")) {
+            display.value = display.value.slice(1);
+            return;
+        } else {
+            display.value = "-" + display.value;
+            return;
+        }
+    }
+
+    if (value === ".") { // "Dot" button
+        if (display.value.includes(".")) {
+            return;
+        } else {
+            display.value = display.value + ".";
+            return;
+        }
+    }
+
     if (display.value === "0") { // Remove the 0 if another number is pressed.
         display.value = value;
     } else {
         display.value += value;
     }
 
-    console.log(value);
-    console.log(display.value);
+    console.log(`Current value: ${value}`);
+    console.log(`Display value: ${display.value}`);
 });
